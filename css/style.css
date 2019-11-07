@@ -100,6 +100,29 @@
 
 
 
+.square {
+
+  width: 10px;
+  height: 10px;
+  /*background-color: #CD5C5C;*/
+  margin: 0 auto;
+  position: relative;
+}
+
+.square::after  {
+  margin-left: 10px;
+  content: "\f0c8";
+  font-family: FontAwesome;
+  font-size: 15px;
+  position: none;
+}
+
+
+#lsl{color: orange;}
+
+#ral{color: blue;}
+
+
 
 /*--------modifying layers container css to deal with bootstrap confilict-------------*/
 

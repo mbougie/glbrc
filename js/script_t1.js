@@ -47,6 +47,11 @@ var map = L.map('map', {
 });
 
 
+
+///////////////////////////////////////////////////////////////////////////////////
+/////// old layer control /////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+
 // var baseMaps = [
 //                  {
 // 				    groupName : "Base Maps",
@@ -86,7 +91,16 @@ var map = L.map('map', {
 // 	exclusive       	: true
 // };
 
-var center = [40, 0];
+
+
+// var control = L.Control.styledLayerControl(baseMaps, overlays, options);
+// map.addControl(control);
+
+
+
+
+
+// var center = [40, 0];
 var osm = L.tileLayer(
             '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {attribution: '© OpenStreetMap contributors'}
@@ -146,17 +160,14 @@ var osm = L.tileLayer(
         sevilla.addTo(map);
 
         var overlaysTree = {
+            label: 'Some cities',
             children: [
-                {label: 'France', children: [
-                    {label: 'Lyon', layer: L.marker([45.728, 4.945])},
-                    {label: 'Paris', layer: L.marker([48.725, 2.359])},
-                    {label: 'Toulouse', layer: L.marker([43.629, 1.364])},
+                {label: '<div id="onlysel">-Show only selected-</div>'},
+                {label: '<span>Low capability land</span><span class = "info_circle"></span><span class = "download"></span>', selectAllCheckbox: true, children: [
+                    {label: '<span id = "lsl" class = "square"></span>', layer: lsl},
                 ]},
-                {label: 'Germany', selectAllCheckbox: true, children: [
-                    {label: 'Berlin', layer: L.marker([52.559, 13.287])},
-                    {label: 'Cologne', layer: L.marker([50.866, 7.143])},
-                    {label: 'Hamburg', layer: L.marker([53.630, 9.988])},
-                    {label: 'Munich', layer: L.marker([48.354, 11.786])},
+                {label: '<span>Recently abandoned land</span><span class = "info_circle"></span><span class = "download"></span>', selectAllCheckbox: true, children: [
+                    {label: '<span id = "ral" class = "square"></span>', layer: hal},
                 ]},
                 {label: 'Spain',
                     selectAllCheckbox: 'De/seleccionar todo',
@@ -186,8 +197,6 @@ var osm = L.tileLayer(
             {
                 namedToggle: true,
                 selectorBack: false,
-                // closedSymbol: '&#8862; &#x1f5c0;',
-                // openedSymbol: '&#8863; &#x1f5c1;',
                 collapseAll: 'Collapse all',
                 expandAll: 'Expand all',
                 collapsed: false,
@@ -200,7 +209,23 @@ var osm = L.tileLayer(
 
 
 
-////// new stuff ////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////
+////// new stuff ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+///////// add the questionmark button ///////////////////////////
+
 var customControl = L.Control.extend({
  
   options: {
@@ -224,139 +249,9 @@ onAdd: function (map) {
 
 map.addControl(new customControl());
 
+/////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
-////////////////////////////////////////////////////////////
-///////  create credit graphic  ////////////////////////////
-////////////////////////////////////////////////////////////
-
-// var credctrl = L.controlCredits({
-//     image: "./images/logo_perc_75.jpg",
-//     link: "https://www.glbrc.org/",
-//     text: "GLBRC<br/>Great Lakes Bioenergy Research Center",
-//     width: 254,
-//     height: 112
-// }).addTo(map);
-
-
-
-////////////////////////////////////////////////////////////
-///////  create legends  ///////////////////////////////////
-////////////////////////////////////////////////////////////
-
-var legend = L.control({position: 'bottomright'});
-
-
-function getKey(current_url) {
-	///function to get the key of the object given a value
-	for (var key in url_obj) {
-		if (url_obj[key].url == current_url) {
-			return key
-		}
-	}
-
-}
-
-
-
-
-
-keys_array = ["lsl"]
-
-console.log(url_obj["lsl"].hex)
-
-legend.onAdd = function (map) {
-	var div = L.DomUtil.create('div', 'info legend');
-	for (var i = 0; i < keys_array.length; i++) {
-		console.log(keys_array[i])
-		div.innerHTML +=
-			'<i style="background:' + url_obj[keys_array[i]].hex + '"></i> ' + url_obj[keys_array[i]].label + (url_obj[keys_array[i]].label ? '<br>' : '');
-	}
-	return div;
-};
-
-legend.addTo(map);
-
-
-
-
-function addToLegend(current_key){
-	console.log('rererr', current_key)
-	keys_array.push(current_key);
-	
-	legend.onAdd = function (map) {
-		var div = L.DomUtil.create('div', 'info legend')
-		for (var i = 0; i < keys_array.length; i++) {
-		console.log(keys_array[i])
-		div.innerHTML +=
-			'<i style="background:' + url_obj[keys_array[i]].hex + '"></i> ' + url_obj[keys_array[i]].label + (url_obj[keys_array[i]].label ? '<br>' : '');
-	}
-	return div;
-	};
-
-	legend.addTo(map);
-}
-
-
-
-
-function removeFromLegend(current_key){
-	console.log('inside removeFromLegend', current_key)
-
-	///remove layer from array
-	var index = keys_array.indexOf(current_key);
-	if (index > -1) {
-	  keys_array.splice(index, 1);
-	}
-	
-    legend.onAdd = function (map) {
-		var div = L.DomUtil.create('div', 'info legend')
-		for (var i = 0; i < keys_array.length; i++) {
-		console.log(keys_array[i])
-		div.innerHTML +=
-			'<i style="background:' + url_obj[keys_array[i]].hex + '"></i> ' + url_obj[keys_array[i]].label + (url_obj[keys_array[i]].label ? '<br>' : '');
-	}
-	return div;
-	};
-
-	legend.addTo(map);
-}
-
-// Add this one (only) for now, as the Population layer is on by default!!!!!!!!!!!!!!!!!!!!!
-// legend.addTo(map);
-
-
-map.on('overlayadd', function (eventLayer) {
-	console.log('overlayadd')
-	console.log(eventLayer)
-	current_url = eventLayer.layer._url
-	current_key = getKey(current_url)
-	console.log(current_key)
-	addToLegend(current_key)
-
-});
-
-
-map.on('overlayremove', function (eventLayer) {
-	console.log('overlayremove')
-	console.log(eventLayer)
-	current_url = eventLayer.layer._url
-	current_key = getKey(current_url)
-	console.log(current_key)
-	removeFromLegend(current_key)
-
-});
-
-
-
-// L.control.layers(overlays,null,{collapsed:false}).addTo(map);
-var control = L.Control.styledLayerControl(baseMaps, overlays, options);
-map.addControl(control);
-			
 
 
 ////// this needs to be added AFTER map.addControl(control) otherwise doesnt recognize!!
