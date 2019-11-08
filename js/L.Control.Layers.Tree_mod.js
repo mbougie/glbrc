@@ -3,7 +3,14 @@
  * Do not forget to include the css file.
  */
 
+
+
 (function(L) {
+    ////MAJOR hack to create global variable for switch in the layercontrol
+    var on_off = true
+
+
+
     if (typeof L === 'undefined') {
         throw new Error('Leaflet must be included first');
     }
@@ -104,15 +111,25 @@
 
         // Expands the whole tree (base other overlays)
         expandTree: function(overlay) {
+            console.log(on_off)
             var container = overlay ? this._overlaysList : this._baseLayersList;
-            if (container) {
+            if (on_off === true) {
+
                 this._applyOnTree(container, false);
+                on_off = false
+                return this._localExpand();
             }
-            return this._localExpand();
+            else if (on_off === false) {
+                this._applyOnTree(container, true);
+                on_off = true
+                return this._localExpand();
+            }
+            
         },
 
         // Collapses the whole tree (base other overlays)
         collapseTree: function(overlay) {
+            console.log(this._overlaysList)
             var container = overlay ? this._overlaysList : this._baseLayersList;
             if (container) {
                 this._applyOnTree(container, true);
@@ -274,6 +291,7 @@
 
         // Create the "Collapse all" or expand, if needed.
         _expandCollapseAll: function(overlay, text, fn, ctx) {
+            console.log('_expandCollapseAll')
             var container = overlay ? this._overlaysList : this._baseLayersList;
             ctx = ctx ? ctx : this;
             if (text) {
@@ -519,4 +537,3 @@
     }
 
 })(L);
-

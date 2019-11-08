@@ -170,7 +170,7 @@ var osm = L.tileLayer(
                         {label: 'Bask Country', children: [
                             {label: '---', layer: L.layerGroup([]), radioGroup: 'bc'},
                             {label: 'Bilbao', layer: L.marker([43.301, -2.911]), radioGroup: 'bc'},
-                            {label: 'San Sebastian', layer: L.marker([43.356, -1.791]), radioGroup: 'bc'},
+                            {label: 'San S', layer: L.marker([43.356, -1.791]), radioGroup: 'bc'},
                             {label: 'Vitoria', layer: L.marker([42.883, -2.724]), radioGroup: 'bc'},
                         ]},
                         {label: 'Catalonia', children: [
@@ -188,8 +188,8 @@ var osm = L.tileLayer(
                 selectorBack: false,
                 // closedSymbol: '&#8862; &#x1f5c0;',
                 // openedSymbol: '&#8863; &#x1f5c1;',
-                collapseAll: 'Collapse all',
-                expandAll: 'Expand all',
+                // collapseAll: 'Collapse all',
+                expandAll: 'Marginal Land Data',
                 collapsed: false,
             });
 

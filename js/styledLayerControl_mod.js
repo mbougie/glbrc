@@ -30,8 +30,9 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
         }
 
         for (i in groupedOverlays) {
+            console.log('i', i)
             for (var j in groupedOverlays[i].layers) {
-                console.log('fdfdf')
+                console.log('j', j)
                 this._addLayer(groupedOverlays[i].layers[j], j, groupedOverlays[i], true);
             }
         }
