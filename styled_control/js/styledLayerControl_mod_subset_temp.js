@@ -1,8 +1,14 @@
 L.Control.StyledLayerControl = L.Control.Layers.extend({
+    //// these options are not all baked in and have to be created in this script.  ONly baked in one is position for Control!!!
+    //// trick is to check the control script if things are not showing up with the control
+    /////Note: the extend function is in the leaflet Class section
+    /////Extends the current class given the properties to be included. Returns a Javascript function that is a class constructor (to be called with new).
+    //// th extend function returns a function
     options: {
         collapsed: true,
-        position: 'topright',
+        position: 'topright', 
         autoZIndex: true,
+        yo: true,
         group_togglers: {
             show: false,
             labelAll: 'All',
@@ -11,6 +17,7 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
         groupDeleteLabel: 'Delete the group'
     },
 
+    //// ---- this is in the leaflet Class section
     initialize: function(baseLayers, groupedOverlays, options) {
         var i,
             j;
@@ -39,18 +46,22 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
     },
 
 
+    //// ---- this is in the leaflet Control section
+    ///Extension methods ---- Every control should extend from L.Control and (re-)implement the following methods.
+    ////Should return the container DOM element for the control and add listeners on relevant map events. Called on control.addTo(map).
+    //// this method returns an HTMLElement.
 
+    ///Note: this function calls the private functions!!!
     onAdd: function(map) {
         ////this function creates the div elemets and attach class/id to the div
         this._initLayout();
 
-
         this._update();
 
-        map
-            .on('layeradd', this._onLayerChange, this)
-            .on('layerremove', this._onLayerChange, this)
-            .on('zoomend', this._onZoomEnd, this);
+        // map
+        //     .on('layeradd', this._onLayerChange, this)
+        //     .on('layerremove', this._onLayerChange, this)
+        //     .on('zoomend', this._onZoomEnd, this);
 
         return this._container;
     },
@@ -67,75 +78,33 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
 ///////////////////////////////////////////////////
 
     _initLayout: function() {
+        /////create the form element 
+        ////////// used the DomUtil.create Utility function to work with the DOM tree.  
+        ///-----Creates an HTML element with tagName, sets its class to className, and optionally appends it to container element.  
 
-        //////create the box that holds the panels
+        ////create a form element
+        var form = this._form = L.DomUtil.create('form');
+
+        ////create section element and append it to a form that is then added to the map div using the leaflet method
+        var section = document.createElement('section');
+        section.className = 'ac-container ' + className + '-list';
+
+        section.appendChild(form);
+
+        //////Create the box that holds the panels and add it to the map div using the leaflet method
         var className = 'leaflet-control-layers',
             container = this._container = L.DomUtil.create('div', className);
 
         console.log('this:', this)
         console.log('this._container:', this._container)
 
-        //Makes this work on IE10 Touch devices by stopping it from firing a mouseout event when the touch is released
-        container.setAttribute('aria-haspopup', true);
-
-        if (!L.Browser.touch) {
-            L.DomEvent.disableClickPropagation(container);
-            L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
-        } else {
-            L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
-        }
-
-        ////create section element
-        var section = document.createElement('section');
-        section.className = 'ac-container ' + className + '-list';
-        
-        var form = this._form = L.DomUtil.create('form');
-
-        section.appendChild(form);
-
-        if (this.options.collapsed) {
-            if (!L.Browser.android) {
-                L.DomEvent
-                    .on(container, 'mouseover', this._expand, this)
-                    .on(container, 'mouseout', this._collapse, this);
-            }
-            var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
-            link.href = '#';
-            link.title = 'Layers';
-
-            if (L.Browser.touch) {
-                L.DomEvent
-                    .on(link, 'click', L.DomEvent.stop)
-                    .on(link, 'click', this._expand, this);
-            } else {
-                L.DomEvent.on(link, 'focus', this._expand, this);
-            }
-
-            this._map.on('click', this._collapse, this);
-            // TODO keyboard accessibility
-
-        } else {
-            this._expand();
-        }
 
         this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
         this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
         container.appendChild(section);
 
-        // process options of ac-container css class - to options.container_width and options.container_maxHeight
-        for (var c = 0; c < (containers = container.getElementsByClassName('ac-container')).length; c++) {
-            if (this.options.container_width) {
-                containers[c].style.width = this.options.container_width;
-            }
 
-            // set the max-height of control to y value of map object
-            this._default_maxHeight = this.options.container_maxHeight ? this.options.container_maxHeight : (this._map.getSize().y - 70);
-            containers[c].style.maxHeight = this._default_maxHeight + "px";
-
-        }
-
-        window.onresize = this._on_resize_window.bind(this);
 
     },
 

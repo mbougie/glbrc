@@ -20,13 +20,13 @@
 
 
 
-.ac-container{
+/*.ac-container{
 	width: auto;
 	text-align: left;
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: auto;
-}
+}*/
 
 div[id^="leaflet-control-accordion-layers"] > label {
 	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
@@ -122,15 +122,15 @@ div[id^="leaflet-control-accordion-layers"] > label:hover {
     cursor: pointer;
 }
 
-.ac-container .group-toggle-container {
+/*.ac-container .group-toggle-container {
     text-align: right;
     margin-right: 3px;
     line-height: 0px;
     display: none;
     height: 20px;
-}
+}*/
 
-.ac-container input.menu:checked ~ .group-toggle-container {
+/*.ac-container input.menu:checked ~ .group-toggle-container {
     display: block;
 	line-height: 1em;
 }
@@ -145,9 +145,9 @@ div[id^="leaflet-control-accordion-layers"] > label:hover {
 	font-family: 'Ubuntu-Regular', Arial, sans-serif;
 	font-size: 13px;
 
-}
+}*/
 
-.bt_delete{
+/*.bt_delete{
     position: relative;
 	float: right;
 	background-image: url(images/delete.png);
@@ -159,9 +159,9 @@ div[id^="leaflet-control-accordion-layers"] > label:hover {
     height: 16px;
     width: 16px;
     vertical-align: middle;
-}
+}*/
 
-.leaflet-control-layers-expanded {
+/*.leaflet-control-layers-expanded {
     padding: 5px;
 }
 
@@ -170,3 +170,4 @@ div[id^="leaflet-control-accordion-layers"] > label:hover {
 	background: #e0e3ec url(images/bgnoise_lg.jpg) repeat top left;
 	border-radius: 5px;
 }
+*/
