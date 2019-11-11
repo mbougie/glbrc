@@ -4,8 +4,18 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
     /////Note: the extend function is in the leaflet Class section
     /////Extends the current class given the properties to be included. Returns a Javascript function that is a class constructor (to be called with new).
     //// th extend function returns a function
+
+    /////Inheritance You use L.Class.extend to define new classes, but you can use the same method on any class to inherit from it
+
+
+    // You already know controls - the zoom control in the top left corner, the scale at the bottom left, the layer switcher at the top right. At their core, an L.Control is an HTML Element that is at a static position in the map container.
+
+    // To make a control, simply inherit from L.Control and implement onAdd() and onRemove(). These methods work in a similar way to their L.Layer counterparts (they run whenever the control is added to or removed from the map), except that onAdd() must return an instance of HTMLElement representing the control. Adding the element to the map is done automatically, and so is removing it.
+
+
+
     options: {
-        collapsed: true,
+        collapsed: false,
         position: 'topright', 
         autoZIndex: true,
         yo: true,
@@ -72,7 +82,7 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
             .off('layerremove', this._onLayerChange);
     },
 
-  
+
 ///////////////////////////////////////////////////
 //// important function  (funt_1 )///////////////////////////
 ///////////////////////////////////////////////////
@@ -426,6 +436,13 @@ L.Control.StyledLayerControl = L.Control.Layers.extend({
 
 }); ///////// END OF L.Control.Layers.extend method ////////////////////////////////////////
 
+
+
+
+
+
+
+//////////////////// call the function???method instantiate the class above?????????????? ///////////////////////////////////////////////
 L.Control.styledLayerControl = function(baseLayers, overlays, options) {
     return new L.Control.StyledLayerControl(baseLayers, overlays, options);
 };
